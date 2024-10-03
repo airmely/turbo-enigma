@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres-balance-system
+    environment:
+      POSTGRES_DB: "balancesystem"
+      POSTGRES_USER: "balancesystem"
+      POSTGRES_PASSWORD: "balancesystem"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    restart: unless-stopped
+
+
+
+  redis:
+    image: redis
+    container_name: redis-balance-system
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
