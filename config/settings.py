@@ -31,6 +31,7 @@ CONTRIB_APPS = [
 ]
 
 PROJECT_APPS = [
+    "apps.balance.apps.BalanceConfig",
     "apps.base.apps.BaseConfig",
     "apps.users.apps.UsersConfig",
 ]
