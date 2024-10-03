@@ -1,7 +1,7 @@
 from drf_yasg import openapi
 from drf_yasg.generators import OpenAPISchemaGenerator
 from drf_yasg.views import get_schema_view as default_get_schema_view
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 
 
 class _CustomSchemaGenerator(OpenAPISchemaGenerator):
@@ -19,5 +19,8 @@ def get_schema_view(title: str, version: str):
         openapi.Info(title=title, default_version=version),
         public=True,
         generator_class=_CustomSchemaGenerator,
-        permission_classes=(IsAuthenticated,)
+        permission_classes=(AllowAny,),  # noqa
     )
+
+
+schema_view = get_schema_view(title="Balance System", version="0.0.1")

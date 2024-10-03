@@ -31,8 +31,8 @@ CONTRIB_APPS = [
 ]
 
 PROJECT_APPS = [
-    "base.apps.BaseConfig",
-    "users.apps.UsersConfig",
+    "apps.base.apps.BaseConfig",
+    "apps.users.apps.UsersConfig",
 ]
 
 THIRD_PARTY_APPS = [
