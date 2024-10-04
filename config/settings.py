@@ -38,9 +38,9 @@ PROJECT_APPS = [
 
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "rest_framework.authtoken",
     "drf_yasg",
     "djoser",
-    "django_extensions",
 ]
 
 INSTALLED_APPS = CONTRIB_APPS + PROJECT_APPS + THIRD_PARTY_APPS
@@ -54,6 +54,16 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if DEBUG:
+    INSTALLED_APPS.extend(
+        [
+            "django_extensions",
+            "debug_toolbar",
+        ]
+    )
+    INTERNAL_APPS = ["127.0.0.1", "localhost"]
+    MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
 
 ROOT_URLCONF = "config.urls"
 
@@ -134,4 +144,21 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+}
+
+# DJOSER SETTINGS
+DJOSER = {
+    "LOGIN_FIELD": "email",
+}
+
+# SWAGGER SETTINGS
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Token": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization",
+            "description": "Token-based authentication using Knox. Example: 'Authorization: Token <your-token>'",
+        }
+    }
 }
