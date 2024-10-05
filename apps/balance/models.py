@@ -5,7 +5,6 @@ class Balance(models.Model):
     owner = models.OneToOneField(
         to="users.User",
         on_delete=models.CASCADE,
-        related_name="user_balance",
     )
     amount = models.PositiveSmallIntegerField(
         default=0,
