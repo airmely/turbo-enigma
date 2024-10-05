@@ -1,4 +1,3 @@
-from balance.rest.serializers import BalanceSerializer
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.validators import EmailValidator
@@ -25,7 +24,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
         )
         extra_kwargs = {
             "password": {"validators": [validate_password], "write_only": True},
-            "avatar": {"required": False},
             "email": {
                 "validators": [
                     EmailValidator,
@@ -51,11 +49,6 @@ class UserCompleteSerializer(serializers.ModelSerializer):
     """
     Complete serializer for user.
     """
-
-    balance = BalanceSerializer(
-        source="user_balance",
-        read_only=True,
-    )
 
     class Meta:
         model = User
