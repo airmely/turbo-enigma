@@ -3,7 +3,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.validators import EmailValidator
 from rest_framework import serializers
 
-from apps.balance.models import Balance
+from apps.balance.rest.serializers import BalanceSerializer
 from apps.users.validators import UniqueMailLowerValidator
 
 User = get_user_model()
@@ -14,6 +14,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
     Serializer for user creation
     """
 
+    balance = BalanceSerializer(read_only=True)
+
     class Meta:
         model = User
         fields = (
@@ -21,6 +23,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
             "email",
             "password",
             "username",
+            "balance",
         )
         extra_kwargs = {
             "password": {"validators": [validate_password], "write_only": True},
@@ -49,6 +52,8 @@ class UserCompleteSerializer(serializers.ModelSerializer):
     """
     Complete serializer for user.
     """
+
+    balance = BalanceSerializer(read_only=True)
 
     class Meta:
         model = User
