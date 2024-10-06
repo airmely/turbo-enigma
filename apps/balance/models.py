@@ -35,9 +35,19 @@ class Transaction(models.Model):
     DEPOSIT = "deposit"
     WITHDRAW = "withdraw"
 
+    PENDING = "pending"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
     ACTIONS_CHOICES = (
         (DEPOSIT, "Deposit"),
         (WITHDRAW, "Withdraw"),
+    )
+
+    STATUS_CHOICES = (
+        (PENDING, "Pending"),
+        (COMPLETED, "Completed"),
+        (FAILED, "Failed"),
     )
 
     sender = models.ForeignKey(
@@ -59,6 +69,11 @@ class Transaction(models.Model):
     action = models.CharField(
         choices=ACTIONS_CHOICES,
         default=DEPOSIT,
+        max_length=10,
+    )
+    status = models.CharField(
+        choices=STATUS_CHOICES,
+        default=PENDING,
         max_length=10,
     )
 
