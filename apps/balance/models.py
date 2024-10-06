@@ -14,6 +14,15 @@ class Balance(models.Model):
 
 
 class Transaction(models.Model):
+
+    DEPOSIT = "deposit"
+    WITHDRAW = "withdraw"
+
+    ACTIONS_CHOICES = (
+        (DEPOSIT, "Deposit"),
+        (WITHDRAW, "Withdraw"),
+    )
+
     sender = models.ForeignKey(
         to="users.User",
         on_delete=models.CASCADE,
@@ -30,6 +39,11 @@ class Transaction(models.Model):
         null=False,
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    action = models.CharField(
+        choices=ACTIONS_CHOICES,
+        default=DEPOSIT,
+        max_length=10,
+    )
 
     class Meta:
-        ordering = ("created_at",)
+        ordering = ("-created_at",)
