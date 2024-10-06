@@ -2,6 +2,15 @@ from django.db import models
 
 
 class Balance(models.Model):
+
+    RUB = "₽"
+    USD = "$"
+
+    CURRENCY_CHOICES = (
+        (RUB, "₽"),
+        (USD, "$"),
+    )
+
     owner = models.OneToOneField(
         to="users.User",
         on_delete=models.CASCADE,
@@ -11,6 +20,14 @@ class Balance(models.Model):
         blank=False,
         null=False,
     )
+    currency = models.CharField(
+        choices=CURRENCY_CHOICES,
+        default=RUB,
+        max_length=3,
+    )
+
+    def __str__(self):
+        return f"{self.amount} {self.currency}"
 
 
 class Transaction(models.Model):
