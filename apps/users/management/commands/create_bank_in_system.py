@@ -20,6 +20,7 @@ class Command(BaseCommand):
             is_superuser=True,
         )
 
+        user.balance.amount += 1_000_000
         user.set_password("123")
         user.save()
 
