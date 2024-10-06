@@ -1,6 +1,6 @@
 # Makefile
 
-PROJECT_NAME=balance-system
+PROJECT_NAME=balance_system
 BASE_COMMAND=python3 manage.py
 
 main:
