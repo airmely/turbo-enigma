@@ -15,6 +15,7 @@ from apps.balance.rest.serializers import (
     TopUpBalanceSerializer,
     TransactionHistorySerializer,
 )
+from apps.balance.tasks import process_transaction_task
 
 User = get_user_model()
 
@@ -115,45 +116,12 @@ class SendAmountUserToUserAPIView(APIView):
 
         if serializer.is_valid(raise_exception=True):
             receiver_id = kwargs["receiver_id"]
-            try:
-
-                receiver = User.objects.get(id=receiver_id)
-            except User.DoesNotExist:
-                return Response(
-                    {"detail": "User does not exist."},
-                    status=status.HTTP_404_NOT_FOUND,
-                )
-            if receiver == request.user:
-                return Response(
-                    {"detail": "You cannot send money to yourself."},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+            sender_id = request.user.pk
             amount = serializer.validated_data["amount"]
-            sender = request.user
 
-            sender_balance = Balance.objects.get(owner=sender)
-            receiver_balance = receiver.balance
-
-            if sender_balance.amount < amount:
-                return Response(
-                    {"detail": "There are insufficient funds in the account."},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-
-            sender_balance.amount -= amount
-            receiver_balance.amount += amount
-
-            sender_balance.save()
-            receiver_balance.save()
-
-            Transaction.objects.create(
-                sender=sender,
-                receiver=receiver,
-                amount=amount,
-                action=Transaction.WITHDRAW,
-            )
+            process_transaction_task(sender_id, receiver_id, amount)
 
             return Response(
-                {"detail": "The translation was completed successfully."},
+                {"detail": "Transaction is being processed."},
                 status=status.HTTP_200_OK,
             )
