@@ -18,4 +18,9 @@ urlpatterns = [
         views.TransactionHistoryAPIView.as_view(),
         name="transaction-history",
     ),
+    path(
+        "transactions/<int:receiver_id>/",
+        views.SendAmountUserToUserAPIView.as_view(),
+        name="transaction-send-amount",
+    ),
 ]

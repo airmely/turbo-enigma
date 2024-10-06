@@ -35,3 +35,12 @@ class TransactionHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = "__all__"
+
+
+class SendAmountUserToUserSerializer(serializers.Serializer):
+    amount = serializers.IntegerField()
+
+    def validate_amount(self, value):  # noqa
+        if value <= 0:
+            raise serializers.ValidationError("The sum must be positive.")
+        return value
