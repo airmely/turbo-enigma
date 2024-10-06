@@ -2,7 +2,7 @@
 
 PROJECT_NAME=balance_system
 BASE_COMMAND=python3 manage.py
-CELERY_APP = config
+CELERY_APP=config
 
 main:
 	$(BASE_COMMAND) $(ARGS)
@@ -28,4 +28,9 @@ shell:
 admin:
 	$(BASE_COMMAND) createsuperuser
 
-.PHONY: main start stop celery shell admin migrate make_migrate
+up:
+	docker-compose up --build -d
+	docker exec balance_system-web-1 poetry run python manage.py create_bank_in_system
+	docker exec balance_system-web-1 poetry run python manage.py create_super_user
+
+.PHONY: main start stop celery shell admin migrate make_migrate up
