@@ -15,7 +15,7 @@ class Balance(models.Model):
         to="users.User",
         on_delete=models.CASCADE,
     )
-    amount = models.PositiveSmallIntegerField(
+    amount = models.PositiveBigIntegerField(
         default=0,
         blank=False,
         null=False,
@@ -60,7 +60,7 @@ class Transaction(models.Model):
         on_delete=models.CASCADE,
         related_name="receiver_balance",
     )
-    amount = models.PositiveSmallIntegerField(
+    amount = models.PositiveBigIntegerField(
         default=0,
         blank=False,
         null=False,
@@ -79,3 +79,6 @@ class Transaction(models.Model):
 
     class Meta:
         ordering = ("-created_at",)
+
+    def __str__(self):
+        return f"{self.sender} -> {self.receiver} send {self.amount} with status: {self.status}"
