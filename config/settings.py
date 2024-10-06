@@ -149,11 +149,11 @@ REST_FRAMEWORK = {
 # DJOSER SETTINGS
 DJOSER = {
     "LOGIN_FIELD": "email",
-    # "SERIALIZERS": {
-    #     "user_create": "apps.users.rest.serializers.UserCreateSerializer",
-    #     "user": "apps.users.rest.serializers.UserCompleteSerializer",
-    #     "current_user": "apps.users.rest.serializers.UserCompleteSerializer",
-    # },  # Token 6dedb9718e079aa792ffe86a20b07a0873bbba2e
+    "SERIALIZERS": {
+        "user_create": "apps.users.rest.serializers.UserCreateSerializer",
+        "user": "apps.users.rest.serializers.UserCompleteSerializer",
+        "current_user": "apps.users.rest.serializers.UserCompleteSerializer",
+    },
 }
 
 # SWAGGER SETTINGS
