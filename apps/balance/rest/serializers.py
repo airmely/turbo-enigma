@@ -10,7 +10,7 @@ class BalanceSerializer(serializers.ModelSerializer):
 
 
 class TopUpBalanceSerializer(serializers.Serializer):
-    amount = serializers.IntegerField()
+    amount = serializers.IntegerField(write_only=True)
 
     class Meta:
         fields = ("amount",)
@@ -24,10 +24,10 @@ class TopUpBalanceSerializer(serializers.Serializer):
 class BalanceDetailSerializer(serializers.Serializer):
     """Used for documentation only swagger"""
 
-    balance = serializers.IntegerField()
+    detail = serializers.CharField(read_only=True)
 
     class Meta:
-        fields = ("balance",)
+        fields = ("detail",)
 
 
 class TransactionHistorySerializer(serializers.ModelSerializer):

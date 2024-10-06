@@ -7,13 +7,14 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.balance.constants import MAIN_BANK_ID
 from apps.balance.models import Balance, Transaction
 from apps.balance.rest.serializers import (
-    BalanceDetailSerializer,
     BalanceSerializer,
     SendAmountUserToUserSerializer,
     TopUpBalanceSerializer,
     TransactionHistorySerializer,
+    BalanceDetailSerializer,
 )
 from apps.balance.tasks import process_transaction_task
 
@@ -60,19 +61,11 @@ class TopUpBalanceAPIView(APIView):
 
         if serializer.is_valid(raise_exception=True):
             user = request.user
-            user.balance.amount += serializer.validated_data["amount"]
-            user.balance.save()
-            bank = User.objects.get(username="Main bank")
-            Transaction.objects.create(
-                sender=bank,
-                receiver=user,
-                amount=serializer.validated_data["amount"],
-                action=Transaction.DEPOSIT,
-            )
+            amount = serializer.validated_data["amount"]
+            process_transaction_task(MAIN_BANK_ID, user.pk, amount)
+
             return Response(
-                {
-                    "balance": user.balance.amount,
-                },
+                {"detail": "Transaction is being processed."},
                 status=status.HTTP_200_OK,
             )
 
@@ -110,6 +103,9 @@ class SendAmountUserToUserAPIView(APIView):
 
     @swagger_auto_schema(
         request_body=SendAmountUserToUserSerializer,
+        responses={
+            status.HTTP_200_OK: BalanceDetailSerializer(),
+        },
     )
     def post(self, request: Request, *args, **kwargs) -> Response:  # noqa
         serializer = SendAmountUserToUserSerializer(data=request.data)
