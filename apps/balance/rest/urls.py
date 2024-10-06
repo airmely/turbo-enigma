@@ -1,6 +1,6 @@
 from django.urls import path
-from apps.balance.rest import views
 
+from apps.balance.rest import views
 
 urlpatterns = [
     path(

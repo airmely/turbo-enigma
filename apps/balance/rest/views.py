@@ -3,17 +3,17 @@ from django.db.models import Q
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from apps.balance.models import Transaction, Balance
+from apps.balance.models import Balance, Transaction
 from apps.balance.rest.serializers import (
-    TopUpBalanceSerializer,
     BalanceDetailSerializer,
     BalanceSerializer,
-    TransactionHistorySerializer,
     SendAmountUserToUserSerializer,
+    TopUpBalanceSerializer,
+    TransactionHistorySerializer,
 )
 
 User = get_user_model()
