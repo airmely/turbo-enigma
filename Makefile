@@ -2,6 +2,7 @@
 
 PROJECT_NAME=balance_system
 BASE_COMMAND=python3 manage.py
+CELERY_APP = config
 
 main:
 	$(BASE_COMMAND) $(ARGS)
@@ -13,7 +14,7 @@ make_migrate:
 	$(BASE_COMMAND) makemigrations
 
 celery:
-	celery -A $(PROJECT_NAME) worker -l INFO
+	celery -A $(CELERY_APP) worker -l INFO
 
 stop:
 	docker stop $$(docker ps -q) || true
