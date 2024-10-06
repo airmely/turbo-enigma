@@ -9,11 +9,6 @@ urlpatterns = [
         name="balance-get",
     ),
     path(
-        "balance/update/",
-        views.TopUpBalanceAPIView.as_view(),
-        name="balance-update",
-    ),
-    path(
         "transactions/",
         views.TransactionHistoryAPIView.as_view(),
         name="transaction-history",

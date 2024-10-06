@@ -10,11 +10,11 @@ from rest_framework.views import APIView
 from apps.balance.constants import MAIN_BANK_ID
 from apps.balance.models import Balance, Transaction
 from apps.balance.rest.serializers import (
+    BalanceDetailSerializer,
     BalanceSerializer,
     SendAmountUserToUserSerializer,
     TopUpBalanceSerializer,
     TransactionHistorySerializer,
-    BalanceDetailSerializer,
 )
 from apps.balance.tasks import process_transaction_task
 
@@ -45,36 +45,6 @@ class GetBalanceAPIView(APIView):
             )
 
 
-class TopUpBalanceAPIView(APIView):
-
-    permission_classes = [IsAuthenticated]
-
-    @swagger_auto_schema(
-        request_body=TopUpBalanceSerializer,
-        responses={
-            status.HTTP_200_OK: BalanceDetailSerializer(),
-        },
-        operation_summary="Top Up Balance",
-    )
-    def post(self, request: Request) -> Response:
-        serializer = TopUpBalanceSerializer(data=request.data)
-
-        if serializer.is_valid(raise_exception=True):
-            user = request.user
-            amount = serializer.validated_data["amount"]
-            process_transaction_task(MAIN_BANK_ID, user.pk, amount)
-
-            return Response(
-                {"detail": "Transaction is being processed."},
-                status=status.HTTP_200_OK,
-            )
-
-        return Response(
-            serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-
-
 class TransactionHistoryAPIView(APIView):
 
     permission_classes = [IsAuthenticated]
@@ -96,6 +66,31 @@ class TransactionHistoryAPIView(APIView):
             status=status.HTTP_200_OK,
         )
 
+    @swagger_auto_schema(
+        request_body=TopUpBalanceSerializer,
+        responses={
+            status.HTTP_200_OK: BalanceDetailSerializer(),
+        },
+        operation_summary="Top Up Balance",
+    )
+    def post(self, request: Request) -> Response:
+        serializer = TopUpBalanceSerializer(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            user = request.user
+            amount = serializer.validated_data["amount"]
+            process_transaction_task.delay(MAIN_BANK_ID, user.pk, amount)
+
+            return Response(
+                {"detail": "Transaction is being processed."},
+                status=status.HTTP_200_OK,
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
 
 class SendAmountUserToUserAPIView(APIView):
 
@@ -115,7 +110,7 @@ class SendAmountUserToUserAPIView(APIView):
             sender_id = request.user.pk
             amount = serializer.validated_data["amount"]
 
-            process_transaction_task(sender_id, receiver_id, amount)
+            process_transaction_task.delay(sender_id, receiver_id, amount)
 
             return Response(
                 {"detail": "Transaction is being processed."},
