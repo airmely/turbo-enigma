@@ -21,6 +21,7 @@ class Command(BaseCommand):
         )
 
         user.balance.amount += 1_000_000
+        user.balance.save()
         user.set_password("123")
         user.save()
 
