@@ -18,7 +18,10 @@ def process_transaction_task(
     receiver_id: int,
     amount: int,
 ) -> ResultTransaction:
+    """Background task"""
     try:
+        # Implemented specifically through an additional function
+        # so that unhandled exceptions can be caught
         process_transaction_task_inner(sender_id, receiver_id, amount)
     except (InsufficientFundsException, SelfTransferException) as e:
         return {"detail": str(e)}
@@ -46,12 +49,13 @@ def process_transaction_task_inner(
     receiver_id: int,
     amount: int,
 ) -> None:
+    sender = User.objects.select_related("balance").get(id=sender_id)
+    receiver = User.objects.select_related("balance").get(id=receiver_id)
+    transaction_service = TransactionService(
+        sender=sender,
+        receiver=receiver,
+        amount=amount,
+    )
+    transaction_service.create_transaction()
     with transaction.atomic():
-        sender = User.objects.select_related("balance").get(id=sender_id)
-        receiver = User.objects.select_related("balance").get(id=receiver_id)
-        transaction_service = TransactionService(
-            sender=sender,
-            receiver=receiver,
-            amount=amount,
-        )
         transaction_service.act()
