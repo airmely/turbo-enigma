@@ -24,7 +24,6 @@ class TransactionService(BaseService):
     def act(self) -> None:
         """Validate and perform the money transfer."""
         self.validate()
-        self.create_transaction()
 
         try:
             self.perform_transfer()
