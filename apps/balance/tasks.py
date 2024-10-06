@@ -2,7 +2,6 @@ import logging
 
 from celery import shared_task
 from django.contrib.auth import get_user_model
-from django.db import transaction
 
 from apps.balance.exceptions import InsufficientFundsException, SelfTransferException
 from apps.balance.services import TransactionService
@@ -57,5 +56,4 @@ def process_transaction_task_inner(
         amount=amount,
     )
     transaction_service.create_transaction()
-    with transaction.atomic():
-        transaction_service.act()
+    transaction_service.act()

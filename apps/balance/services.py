@@ -2,6 +2,8 @@ import logging
 from dataclasses import dataclass
 from typing import Callable
 
+from django.db import transaction
+
 from apps.balance.exceptions import (
     BalanceException,
     InsufficientFundsException,
@@ -26,8 +28,9 @@ class TransactionService(BaseService):
         self.validate()
 
         try:
-            self.perform_transfer()
-            self.complete_transaction()
+            with transaction.atomic():
+                self.perform_transfer()
+                self.complete_transaction()
         except BalanceException as e:
             logger.error("Transaction failed: %s", str(e))
             self.fail_transaction()
@@ -43,13 +46,17 @@ class TransactionService(BaseService):
         """Check if the sender has sufficient funds."""
         if self.sender.balance.amount < self.amount:
             logger.error("Insufficient funds for user %s", self.sender.pk)
-            raise InsufficientFundsException()
+            self.fail_transaction()
+            raise InsufficientFundsException("Insufficient funds.")
 
     def validate_not_self_transfer(self):
         """Ensure the sender is not sending money to themselves."""
         if self.sender == self.receiver:
-            logger.error("The user tried to send funds to himself %s", self.amount)
-            raise SelfTransferException()
+            logger.error(
+                "The user tried to send funds to himself amount=%s", self.amount
+            )
+            self.fail_transaction()
+            raise SelfTransferException("Self transfer failed.")
 
     def perform_transfer(self):
         """Transfer the amount from sender to receiver."""
@@ -60,7 +67,7 @@ class TransactionService(BaseService):
         sender_balance.save()
         receiver_balance.save()
         logger.info(
-            "Transferred %s from user %s to user %s",
+            "Transferred %s from user id=%s to user %s",
             self.amount,
             self.sender.pk,
             self.receiver.pk,
@@ -81,11 +88,13 @@ class TransactionService(BaseService):
         if self.transaction:
             self.transaction.status = Transaction.COMPLETED
             self.transaction.save()
-            logger.info("Transaction %s completed successfully.", self.transaction.pk)
+            logger.info(
+                "Transaction id=%s completed successfully.", self.transaction.pk
+            )
 
     def fail_transaction(self):
         """Update the transaction status to failed."""
         if self.transaction:
             self.transaction.status = Transaction.FAILED
             self.transaction.save()
-            logger.info("Transaction %s failed.", self.transaction.pk)
+            logger.info("Transaction id=%s failed.", self.transaction.pk)
