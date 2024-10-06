@@ -167,3 +167,20 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+# CELERY SETTINGS:
+CELERY_BROKER_URL = "redis://localhost:6379/1"
+
+#: Only add pickle to this list if your broker is secured
+#: from unwanted access (see userguide/security.html)
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_RESULT_BACKEND = os.environ.get("REDIS_CELERY_URL", "redis://localhost:6379/1")
+CELERY_TASK_SERIALIZER = "json"
+
+# CACHE SETTINGS
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://localhost:6379/0",
+    }
+}
