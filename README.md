@@ -32,8 +32,8 @@
    - If you don't have make, you can simply use these commands:
    ```bash
     docker-compose up --build -d
-    docker exec balance_system-web-1 poetry run python manage.py create_bank_in_system
-    docker exec balance_system-web-1 poetry run python manage.py create_super_user
+    docker exec turbo-enigma-web-1 poetry run python manage.py create_bank_in_system
+    docker exec turbo-enigma-web-1 poetry run python manage.py create_super_user
    ```
    
 4. **For subsequent launches, start with this command:**
