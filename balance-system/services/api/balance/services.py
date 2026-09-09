@@ -11,7 +11,7 @@ from services.api.balance.exceptions import (
     InsufficientFundsException,
     SelfTransferException,
 )
-from services.api.base.services import BaseService
+from services.api.common.services import BaseService
 
 logger = logging.getLogger(__name__)
 
