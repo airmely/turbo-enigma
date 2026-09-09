@@ -5,13 +5,13 @@ from typing import Callable
 from django.db import transaction
 
 from apps.balance.models import Transaction
+from apps.users.models import User
 from services.api.balance.exceptions import (
     BalanceException,
     InsufficientFundsException,
     SelfTransferException,
 )
 from services.api.base.services import BaseService
-from apps.users.models import User
 
 logger = logging.getLogger(__name__)
 

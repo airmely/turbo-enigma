@@ -3,7 +3,10 @@ import logging
 from celery import shared_task
 from django.contrib.auth import get_user_model
 
-from services.api.balance.exceptions import InsufficientFundsException, SelfTransferException
+from services.api.balance.exceptions import (
+    InsufficientFundsException,
+    SelfTransferException,
+)
 from services.api.balance.services import TransactionService
 
 logger = logging.getLogger(__name__)
