@@ -2,7 +2,6 @@ from django.db import models
 
 
 class Balance(models.Model):
-
     RUB = "₽"
     USD = "$"
 
@@ -31,7 +30,6 @@ class Balance(models.Model):
 
 
 class Transaction(models.Model):
-
     DEPOSIT = "deposit"
     WITHDRAW = "withdraw"
 

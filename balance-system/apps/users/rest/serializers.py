@@ -1,10 +1,9 @@
+from apps.balance.rest.serializers import BalanceSerializer
+from apps.users.validators import UniqueMailLowerValidator
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.validators import EmailValidator
 from rest_framework import serializers
-
-from apps.balance.rest.serializers import BalanceSerializer
-from apps.users.validators import UniqueMailLowerValidator
 
 User = get_user_model()
 

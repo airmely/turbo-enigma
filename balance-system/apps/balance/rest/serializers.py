@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
 from apps.balance.models import Balance, Transaction
+from rest_framework import serializers
 
 
 class BalanceSerializer(serializers.ModelSerializer):
@@ -31,7 +30,6 @@ class BalanceDetailSerializer(serializers.Serializer):
 
 
 class TransactionHistorySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Transaction
         fields = "__all__"

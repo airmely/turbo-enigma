@@ -2,8 +2,6 @@ import logging
 from dataclasses import dataclass
 from typing import Callable
 
-from django.db import transaction
-
 from apps.balance.exceptions import (
     BalanceException,
     InsufficientFundsException,
@@ -12,6 +10,7 @@ from apps.balance.exceptions import (
 from apps.balance.models import Transaction
 from apps.base.services import BaseService
 from apps.users.models import User
+from django.db import transaction
 
 logger = logging.getLogger(__name__)
 

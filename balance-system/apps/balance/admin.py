@@ -1,6 +1,5 @@
-from django.contrib import admin
-
 from apps.balance.models import Balance, Transaction
+from django.contrib import admin
 
 
 @admin.register(Balance)

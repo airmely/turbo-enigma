@@ -1,6 +1,5 @@
-from django.urls import include, path
-
 from apps.base.openapi_schema_generator import schema_view
+from django.urls import include, path
 
 urlpatterns = [
     path("auth/", include("djoser.urls.authtoken")),
