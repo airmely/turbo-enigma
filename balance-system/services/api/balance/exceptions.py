@@ -1,4 +1,4 @@
-from apps.base.exceptions import BaseAppException
+from services.api.base.exceptions import BaseAppException
 
 
 class BalanceException(BaseAppException):
