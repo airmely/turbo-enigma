@@ -4,6 +4,7 @@ from typing import Callable
 
 from django.db import transaction
 
+from apps.balance.choices import TransactionAction, TransactionStatus
 from apps.balance.models import Transaction
 from apps.users.models import User
 from services.api.balance.exceptions import (
@@ -79,14 +80,14 @@ class TransactionService(BaseService):
             sender=self.sender,
             receiver=self.receiver,
             amount=self.amount,
-            action=Transaction.WITHDRAW,
-            status=Transaction.PENDING,
+            action=TransactionAction.WITHDRAW,
+            status=TransactionStatus.PENDING,
         )
 
     def complete_transaction(self):
         """Update the transaction status to complete."""
         if self.transaction:
-            self.transaction.status = Transaction.COMPLETED
+            self.transaction.status = TransactionStatus.COMPLETED
             self.transaction.save()
             logger.info(
                 "Transaction id=%s completed successfully.", self.transaction.pk
@@ -95,6 +96,6 @@ class TransactionService(BaseService):
     def fail_transaction(self):
         """Update the transaction status to failed."""
         if self.transaction:
-            self.transaction.status = Transaction.FAILED
+            self.transaction.status = TransactionStatus.FAILED
             self.transaction.save()
             logger.info("Transaction id=%s failed.", self.transaction.pk)

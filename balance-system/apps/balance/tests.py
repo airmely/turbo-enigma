@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
+from apps.balance.choices import TransactionStatus
 from apps.balance.models import Transaction
 from apps.balance.tasks import process_transaction_task_inner
 from services.api.balance.exceptions import (
@@ -43,7 +44,7 @@ class TransactionServiceTests(TestCase):
             sender=self.sender,
             receiver=self.receiver,
         )
-        self.assertEqual(transaction.status, Transaction.COMPLETED)
+        self.assertEqual(transaction.status, TransactionStatus.COMPLETED)
 
     def test_insufficient_funds(self):
         """Test of insufficient funds for the sender."""
@@ -62,7 +63,7 @@ class TransactionServiceTests(TestCase):
             sender=self.sender,
             receiver=self.receiver,
         )
-        self.assertEqual(transaction.status, Transaction.FAILED)
+        self.assertEqual(transaction.status, TransactionStatus.FAILED)
 
     def test_self_transfer(self):
         """Test of an attempt to transfer funds to yourself."""
@@ -80,4 +81,4 @@ class TransactionServiceTests(TestCase):
             sender=self.sender,
             receiver=self.sender,
         )
-        self.assertEqual(transaction.status, Transaction.FAILED)
+        self.assertEqual(transaction.status, TransactionStatus.FAILED)

@@ -1,15 +1,9 @@
 from django.db import models
 
+from apps.balance.choices import Currency, TransactionAction, TransactionStatus
+
 
 class Balance(models.Model):
-    RUB = "₽"
-    USD = "$"
-
-    CURRENCY_CHOICES = (
-        (RUB, "₽"),
-        (USD, "$"),
-    )
-
     owner = models.OneToOneField(
         to="users.User",
         on_delete=models.CASCADE,
@@ -20,8 +14,8 @@ class Balance(models.Model):
         null=False,
     )
     currency = models.CharField(
-        choices=CURRENCY_CHOICES,
-        default=RUB,
+        choices=Currency.choices,
+        default=Currency.RUB,
         max_length=3,
     )
 
@@ -30,24 +24,6 @@ class Balance(models.Model):
 
 
 class Transaction(models.Model):
-    DEPOSIT = "deposit"
-    WITHDRAW = "withdraw"
-
-    PENDING = "pending"
-    COMPLETED = "completed"
-    FAILED = "failed"
-
-    ACTIONS_CHOICES = (
-        (DEPOSIT, "Deposit"),
-        (WITHDRAW, "Withdraw"),
-    )
-
-    STATUS_CHOICES = (
-        (PENDING, "Pending"),
-        (COMPLETED, "Completed"),
-        (FAILED, "Failed"),
-    )
-
     sender = models.ForeignKey(
         to="users.User",
         on_delete=models.CASCADE,
@@ -65,13 +41,13 @@ class Transaction(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     action = models.CharField(
-        choices=ACTIONS_CHOICES,
-        default=DEPOSIT,
+        choices=TransactionAction.choices,
+        default=TransactionAction.DEPOSIT,
         max_length=10,
     )
     status = models.CharField(
-        choices=STATUS_CHOICES,
-        default=PENDING,
+        choices=TransactionStatus.choices,
+        default=TransactionStatus.PENDING,
         max_length=10,
     )
 
