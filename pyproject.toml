@@ -22,12 +22,13 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "ruff>=0.16.6",
+    "ruff==0.16.6",
     "celery-types>=0.26.0",
     "django-stubs>=6.1.0,<7",
     "django-extensions>=4.1,<5",
     "ipython>=9.17.1,<10",
     "django-debug-toolbar>=8.0.0,<9",
+    "pre-commit>=4.6.2",
 ]
 
 [tool.uv]
@@ -100,7 +101,8 @@ indent-style = "space"
 line-ending = "auto"
 
 [tool.ruff.lint.isort]
-known-third-party = ["pydantic", "aws_lambda_powertools", "checksammy_commons"]
+known-first-party = ["apps", "config", "services"]
+known-third-party = ["celery", "dmr", "dotenv", "msgspec"]
 
 [tool.ruff.lint.mccabe]
 # Flag errors (`C901`) whenever the complexity level exceeds 10.

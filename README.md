@@ -35,7 +35,7 @@
     docker exec turbo-enigma-web-1 poetry run python manage.py create_bank_in_system
     docker exec turbo-enigma-web-1 poetry run python manage.py create_super_user
    ```
-   
+
 4. **For subsequent launches, start with this command:**
     ```bash
     make start

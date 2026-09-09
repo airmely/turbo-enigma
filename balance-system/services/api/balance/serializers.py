@@ -1,5 +1,6 @@
-from apps.balance.models import Balance, Transaction
 from rest_framework import serializers
+
+from apps.balance.models import Balance, Transaction
 
 
 class BalanceSerializer(serializers.ModelSerializer):

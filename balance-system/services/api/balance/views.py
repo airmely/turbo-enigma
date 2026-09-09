@@ -1,3 +1,12 @@
+from django.contrib.auth import get_user_model
+from django.db.models import Q
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from apps.balance.constants import MAIN_BANK_ID
 from apps.balance.models import Balance, Transaction
 from apps.balance.rest.serializers import (
@@ -8,14 +17,6 @@ from apps.balance.rest.serializers import (
     TransactionHistorySerializer,
 )
 from apps.balance.tasks import process_transaction_task
-from django.contrib.auth import get_user_model
-from django.db.models import Q
-from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.request import Request
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 User = get_user_model()
 
