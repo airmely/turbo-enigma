@@ -22,8 +22,6 @@ services:
   web:
     build: .
     working_dir: /app/balance-system
-    env_file:
-      - .env
     command: >
       sh -c "uv run --project /app python manage.py migrate &&
              uv run --project /app python manage.py runserver 0.0.0.0:8000"
@@ -39,8 +37,6 @@ services:
   celery:
     build: .
     working_dir: /app/balance-system
-    env_file:
-      - .env
     command: uv run --project /app celery -A config worker --loglevel=info
     volumes:
       - .:/app

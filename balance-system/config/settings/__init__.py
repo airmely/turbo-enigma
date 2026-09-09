@@ -1,4 +1,4 @@
-from split_settings.tools import include
+from split_settings.tools import include, optional
 
 include(
     "base.py",
@@ -11,7 +11,5 @@ include(
     "static.py",
     "celery.py",
     "cache.py",
+    optional("local_settings.py"),
 )
-
-if DEBUG:
-    include("debug.py")
