@@ -1,9 +1,10 @@
 from django.db import models
 
 from apps.balance.choices import Currency, TransactionAction, TransactionStatus
+from apps.common.models import TimeStampedModel
 
 
-class Balance(models.Model):
+class Balance(TimeStampedModel):
     owner = models.OneToOneField(
         to="users.User",
         on_delete=models.CASCADE,
@@ -23,7 +24,7 @@ class Balance(models.Model):
         return f"{self.amount} {self.currency}"
 
 
-class Transaction(models.Model):
+class Transaction(TimeStampedModel):
     sender = models.ForeignKey(
         to="users.User",
         on_delete=models.CASCADE,
@@ -39,7 +40,6 @@ class Transaction(models.Model):
         blank=False,
         null=False,
     )
-    created_at = models.DateTimeField(auto_now_add=True)
     action = models.CharField(
         choices=TransactionAction.choices,
         default=TransactionAction.DEPOSIT,

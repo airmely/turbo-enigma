@@ -1,20 +1,10 @@
-from abc import ABCMeta, abstractmethod
-from typing import Any, Callable
+import logging
+from typing import Any
 
 
-class BaseService(metaclass=ABCMeta):
+class BaseService:
+    def __init__(self) -> None:
+        self.logger: logging.Logger = logging.getLogger(__name__)
+
     def __call__(self, *args, **kwargs) -> Any:
-        self.validate()
-        return self.act()
-
-    def get_validators(self) -> list[Callable]:  # noqa
-        return []
-
-    def validate(self) -> None:
-        validators = self.get_validators()
-        for validator in validators:
-            validator()
-
-    @abstractmethod
-    def act(self) -> Any:
         raise NotImplementedError("Please Implement this method in the service class.")
