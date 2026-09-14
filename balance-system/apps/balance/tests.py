@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from apps.balance.exceptions import InsufficientFundsException, SelfTransferException
+from services.api.balance.exceptions import InsufficientFundsException, SelfTransferException
 from apps.balance.models import Transaction
 from apps.balance.tasks import process_transaction_task_inner
 

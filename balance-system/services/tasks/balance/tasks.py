@@ -3,8 +3,8 @@ import logging
 from celery import shared_task
 from django.contrib.auth import get_user_model
 
-from apps.balance.exceptions import InsufficientFundsException, SelfTransferException
-from apps.balance.services import TransactionService
+from services.api.balance.exceptions import InsufficientFundsException, SelfTransferException
+from services.api.balance.services import TransactionService
 
 logger = logging.getLogger(__name__)
 ResultTransaction = dict[str, str]
