@@ -1,3 +1,5 @@
+# Copy to local_settings.py for local development overrides (gitignored).
+
 INSTALLED_APPS += [
     "django_extensions",
     "debug_toolbar",

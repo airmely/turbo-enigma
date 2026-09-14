@@ -23,10 +23,11 @@
    cd turbo-enigma
    ```
 
-2. **Set Up Environment Variables:**
+2. **Set Up Configuration (optional):**
    ```bash
-   cp env.example .env
+   cp balance-system/default_config.toml balance-system/config.toml
    ```
+   The app loads `default_config.toml` and merges `config.toml` on top (local file, gitignored). For local dev (debug toolbar, django-extensions) copy `config/settings/local_settings.example.py` to `local_settings.py`.
 
 3. **Start the Application with Docker:**
    ```bash
@@ -66,19 +67,25 @@
 ### Local Development (without Docker)
 
 1. Install [uv](https://docs.astral.sh/uv/).
-2. Install dependencies:
+2. Copy config and local settings:
+   ```bash
+   cp balance-system/default_config.toml balance-system/config.toml
+   cp balance-system/config/settings/local_settings.example.py balance-system/config/settings/local_settings.py
+   ```
+   Set `host = "localhost"` and redis URLs to `localhost` in `config.toml`.
+3. Install dependencies:
    ```bash
    make sync-dev
    ```
-3. Run migrations:
+4. Run migrations:
    ```bash
    make migrate
    ```
-4. Start the dev server:
+5. Start the dev server:
    ```bash
    make main ARGS="runserver"
    ```
-5. Start Celery worker (separate terminal):
+6. Start Celery worker (separate terminal):
    ```bash
    make celery
    ```
