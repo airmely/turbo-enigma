@@ -1,0 +1,18 @@
+[base]
+secret_key = "django-insecure-qrm5y0b57dx@crs12x7_%+z1czo6!vx8rb9f2+agc332-9c%ke"
+debug = true
+allowed_hosts = []
+
+[database]
+name = "balancesystem"
+user = "balancesystem"
+password = "balancesystem"
+host = "postgres"
+port = 5432
+
+[celery]
+broker_url = "redis://redis:6379/1"
+result_backend = "redis://redis:6379/1"
+
+[cache]
+location = "redis://redis:6379/1"

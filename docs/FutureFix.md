@@ -10,7 +10,7 @@ The current implementation incorrectly displays the roles of users in transactio
 
 ### Implementation Steps
 - Update the `Transaction` model if necessary.
-- Adjust the views to fetch and display the correct user roles. 
+- Adjust the views to fetch and display the correct user roles.
 - Writing more comprehensive unit tests to check that transactions are displayed correctly.
 ---
 

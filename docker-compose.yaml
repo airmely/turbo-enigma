@@ -18,25 +18,32 @@ services:
     container_name: redis-balance-system
     ports:
       - "6379:6379"
+
   web:
     build: .
+    working_dir: /app/balance-system
     command: >
-      sh -c "poetry run python manage.py migrate &&
-              poetry run python manage.py runserver 0.0.0.0:8000"
+      sh -c "uv run --project /app python manage.py migrate &&
+             uv run --project /app python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
+      - venv:/app/.venv
     ports:
       - "8000:8000"
     depends_on:
       - postgres
       - redis
+
   celery:
     build: .
-    command: poetry run celery -A config worker --loglevel=info
+    working_dir: /app/balance-system
+    command: uv run --project /app celery -A config worker --loglevel=info
     volumes:
       - .:/app
+      - venv:/app/.venv
     depends_on:
       - redis
 
 volumes:
   postgres_data:
+  venv:
