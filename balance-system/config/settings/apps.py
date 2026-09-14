@@ -12,6 +12,8 @@ PROJECT_APPS = [
     "apps.users.apps.UsersConfig",
 ]
 
-THIRD_PARTY_APPS: list[str] = []
+THIRD_PARTY_APPS = [
+    "dmr",
+]
 
 INSTALLED_APPS = CONTRIB_APPS + PROJECT_APPS + THIRD_PARTY_APPS
