@@ -8,7 +8,7 @@ from services.api import router as main_router
 schema = build_schema(main_router)
 
 urlpatterns = [
-    main_router.to_urlpatterns(namespace='api'),
+    main_router.to_urlpatterns(namespace="api"),
     path("admin/", admin.site.urls),
     path("docs/openapi.json/", OpenAPIJsonView.as_view(schema), name="openapi"),
     path("docs/swagger/", SwaggerView.as_view(schema), name="swagger"),
