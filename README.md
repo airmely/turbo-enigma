@@ -27,7 +27,7 @@
    ```bash
    cp balance-system/default_config.toml balance-system/config.toml
    ```
-   The app loads `default_config.toml` and merges `config.toml` on top (local file, gitignored). For local dev (debug toolbar, django-extensions) copy `config/settings/local_settings.example.py` to `local_settings.py`.
+   The app uses `config.toml` if present, otherwise `default_config.toml`. For local dev (debug toolbar, django-extensions) copy `config/settings/local_settings.example.py` to `local_settings.py`.
 
 3. **Start the Application with Docker:**
    ```bash
