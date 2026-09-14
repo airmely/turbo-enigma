@@ -1,12 +1,12 @@
-from apps.users.models import User
 from django.core.management.base import BaseCommand
+
+from apps.users.models import User
 
 
 class Command(BaseCommand):
     help = "Creates bank in system"
 
     def handle(self, *args, **options):
-
         if User.objects.filter(username="Main bank").exists():
             self.stdout.write(self.style.NOTICE("Main bank already exists"))
             return
