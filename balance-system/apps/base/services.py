@@ -3,7 +3,6 @@ from typing import Any, Callable
 
 
 class BaseService(metaclass=ABCMeta):
-
     def __call__(self, *args, **kwargs) -> Any:
         self.validate()
         return self.act()
